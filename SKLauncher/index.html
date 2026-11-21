@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SKLauncher, a simple counter kiosk for your café</title>
-  <meta name="description" content="SKLauncher turns an Android tablet into a clean, simple screen for your café counter, with clock, apps, and a calm photo background.">
+  <meta name="description" content="SKLauncher turns an Android tablet into a reliable counter kiosk for your café. Keep your POS, delivery, and music apps, with an owner PIN lock and staff lockdown.">
   <style>
     :root {
       --bg: #F5F1EB;
@@ -44,14 +44,10 @@
     .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
     .hero { padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(2rem, 4vw, 3rem); background: linear-gradient(180deg, #F5F1EB 0%, #EFEBE2 100%); border-bottom: 1px solid var(--border); }
     .hero-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: center; }
-    .eyebrow { display: inline-block; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary); background: var(--primary-soft); padding: 0.4rem 0.7rem; border-radius: var(--radius-sm); }
-    h1 { font-size: clamp(2rem, 5vw, 3.6rem); line-height: 1.1; margin: 1rem 0; letter-spacing: -0.02em; }
-    h1 .accent { color: var(--accent); }
-    .lead { font-size: clamp(1rem, 2.2vw, 1.15rem); color: #374151; max-width: 38rem; margin: 0 0 1.25rem; }
+    .hero h1 { margin-top: 0; }
+    .lead { font-size: clamp(1rem, 2.2vw, 1.15rem); color: #374151; max-width: 42rem; margin: 0 0 1.25rem; }
     .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; }
-    .hero-note { font-size: 0.92rem; color: var(--muted); margin: 0; max-width: 38rem; }
-    .free-badge { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.88rem; font-weight: 700; color: var(--primary); background: var(--surface); border: 1px solid var(--border); padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); margin-bottom: 1rem; }
-    .free-badge::before { content: ""; width: 10px; height: 10px; background: var(--accent); flex: 0 0 10px; }
+    .trust { font-size: 0.9rem; color: var(--muted); margin: 0; display: flex; gap: 1.5rem; flex-wrap: wrap; }
     .hero-shot { background: #232A2F; padding: 0.6rem; border-radius: var(--radius); border: 1px solid #3A434A; }
     .hero-shot img { border-radius: 2px; width: 100%; height: auto; }
     .hero-shot figcaption { color: #C7CED4; font-size: 0.78rem; text-align: center; padding: 0.6rem 0 0.1rem; }
@@ -69,8 +65,9 @@
     .card p { margin: 0; color: #4b5563; }
     figure.shot { margin: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
     figure.shot img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; background: #e5e7eb; }
-    figure.shot figcaption { padding: 1rem 1.1rem; font-size: 0.92rem; color: var(--muted); }
+    figure.shot figcaption { padding: 1rem 1.1rem; font-size: 0.92rem; color: var(--muted); line-height: 1.45; }
     figure.shot strong { display: block; color: var(--text); margin-bottom: 0.2rem; font-size: 0.98rem; }
+    .shot-placeholder { height: 180px; display: grid; place-items: center; background: var(--surface-alt); border-bottom: 1px solid var(--border); color: var(--muted); font-size: 0.9rem; }
     .panel { padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); }
     .panel h3 { margin-top: 0; font-size: 1.35rem; letter-spacing: -0.01em; }
     .panel ul { padding-left: 1.2rem; margin: 1rem 0 1.5rem; color: #4b5563; }
@@ -97,13 +94,18 @@
     .footer li + li { margin-top: 0.35rem; }
     .fine { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: 0.85rem; }
     code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88em; background: #EAE5DB; padding: 0.12em 0.35em; border-radius: 2px; }
+    @media (max-width: 699px) {
+      .hero-shot { display: none; }
+      .trust { flex-direction: column; }
+    }
     @media (min-width: 700px) {
       .grid-3, .shots, .steps { grid-template-columns: repeat(3, 1fr); }
-      .split, .footer-grid { grid-template-columns: repeat(2, 1fr); }
+      .split { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (min-width: 960px) {
       .hero-grid { grid-template-columns: 1.05fr .95fr; gap: 2.5rem; }
-      .footer-grid { grid-template-columns: 1.4fr 1fr 1fr; }
+      .footer-grid { grid-template-columns: repeat(3, 1fr); }
     }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
@@ -114,12 +116,12 @@
 <body>
   <nav class="nav">
     <div class="wrap nav-inner">
-      <a class="brand" href="./">SK<span>Launcher</span></a>
+      <a class="brand" href="./">SKLauncher</a>
       <div class="nav-links">
         <a href="#features">Features</a>
-        <a href="#screenshots">Screenshots</a>
-        <a href="#get-it">Get it</a>
+        <a href="#setup">Setup</a>
         <a href="#faq">FAQ</a>
+        <a class="btn btn-primary" href="https://github.com/SimpleAppLauncher/SN-Launcher/releases/download/v0.4.4/SN-Launcher-ef-0.4.4-arm64-v8a.apk">Download Free</a>
       </div>
     </div>
   </nav>
@@ -127,19 +129,17 @@
   <header class="hero">
     <div class="wrap hero-grid">
       <div>
-        <div class="eyebrow">SKLauncher</div>
-        <h1>Turn any Android tablet into a clean <span class="accent">counter kiosk</span> for your café.</h1>
-        <p class="lead">Put the apps your team uses, like POS, menu, music, or loyalty, on one simple screen. SKLauncher gives you a clear clock, a calm photo background, and an easy app grid so the tablet feels ready for the counter.</p>
-        <div class="free-badge">Free and open source (Apache 2.0).</div>
+        <h1>Turn any Android tablet into a reliable café counter kiosk.</h1>
+        <p class="lead">Keep your current POS—like Square, Loyverse, KiotViet, or GrabFood—and wrap it in a locked-down counter screen. SKLauncher prevents staff from accidentally exiting apps, keeps your screen awake during rush hour, and ensures you never miss an online order chime.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="https://github.com/SimpleAppLauncher/SN-Launcher/releases/download/v0.4.4/SN-Launcher-ef-0.4.4-arm64-v8a.apk">Download for Android tablet</a>
-          <a class="btn btn-secondary" href="mailto:hello@example.com?subject=SKLauncher%20cafe%20setup">Contact for setup</a>
+          <a class="btn btn-primary" href="https://github.com/SimpleAppLauncher/SN-Launcher/releases/download/v0.4.4/SN-Launcher-ef-0.4.4-arm64-v8a.apk">Download for Android Tablet</a>
+          <a class="btn btn-secondary" href="#setup">Need Help Setting Up?</a>
         </div>
-        <p class="hero-note">Works on the Android tablets you already own, including older low-RAM devices. <a href="https://github.com/SimpleAppLauncher/SN-Launcher/releases/latest">Other devices and all downloads</a>.</p>
+        <p class="trust">Free &amp; open source (Apache 2.0) • Works on older 1–4 GB RAM tablets • No root or new POS required</p>
       </div>
       <figure class="hero-shot">
-        <img src="assets/home.jpg" alt="SKLauncher home screen showing a photo background, large clock, and weather" width="1280" height="800">
-        <figcaption>Real screen capture from the project.</figcaption>
+        <img src="assets/home.jpg" alt="SKLauncher counter home screen: a clean clock on your café photo" width="1280" height="800">
+        <figcaption>The Counter Home Screen — A clean clock, your café's background photo, and direct one-tap access to your POS, delivery apps, and music.</figcaption>
       </figure>
     </div>
   </header>
@@ -147,24 +147,34 @@
   <section id="features">
     <div class="wrap">
       <div class="section-head">
-        <h2>Made for busy counters.</h2>
-        <p>SKLauncher is a simple home screen for wall or counter tablets. It keeps the essentials visible and makes your key apps easy to open.</p>
+        <h2>Built for Busy Coffee Counters</h2>
+        <p>Big coffee chains have IT teams to lock down their counter tablets. SKLauncher gives independent cafés that same reliability in a lightweight app.</p>
       </div>
       <div class="grid-3">
         <article class="card">
+          <div class="icon icon-accent">▪</div>
+          <h3>Works With Your Existing POS</h3>
+          <p>Keep the register and delivery apps your staff already knows. Put Square, Loyverse, KiotViet, GrabFood, and Spotify on one clean, large-icon grid.</p>
+        </article>
+        <article class="card">
           <div class="icon icon-primary">◷</div>
-          <h3>Easy to read at a glance</h3>
-          <p>A large clock over a photo background gives the tablet a clear, calm look that works well on a counter or wall.</p>
+          <h3>Owner PIN &amp; Staff Lockdown</h3>
+          <p>Tap the clock 5 times and enter your 4-digit Owner PIN to change apps or open Android settings. Staff stay focused on orders without accidentally turning off Wi-Fi or disconnecting receipt printers.</p>
         </article>
         <article class="card">
-          <div class="icon icon-accent">▦</div>
-          <h3>Your apps, front and center</h3>
-          <p>Put your POS, menu, music, or loyalty apps in a simple grid so staff can get to them quickly.</p>
+          <div class="icon icon-accent">▢</div>
+          <h3>Never Miss a Delivery Order</h3>
+          <p>Turning down the café music won't mute your alerts. SKLauncher keeps notification chimes audible so GrabFood, ShopeeFood, and online orders always cut through.</p>
         </article>
         <article class="card">
-          <div class="icon icon-primary">▣</div>
-          <h3>Good fit for older tablets</h3>
-          <p>SKLauncher is built with low-RAM Android tablets in mind, so you can make better use of hardware you already have.</p>
+          <div class="icon icon-primary">☀</div>
+          <h3>Always Awake, Ready for Rush Hour</h3>
+          <p>Keeps your counter display awake while plugged in and auto-starts right back to your counter screen if the tablet restarts.</p>
+        </article>
+        <article class="card">
+          <div class="icon icon-accent">▣</div>
+          <h3>Breathe Life Into Older Tablets</h3>
+          <p>Designed for low-RAM Android devices. Put a spare Samsung, Lenovo, or budget tablet to work instead of buying expensive kiosk hardware.</p>
         </article>
       </div>
     </div>
@@ -173,83 +183,48 @@
   <section id="screenshots" class="section-soft">
     <div class="wrap">
       <div class="section-head">
-        <h2>See the interface.</h2>
-        <p>These are real screenshots from the project. Café-specific setup photos can be added later.</p>
+        <h2>See It in Action</h2>
+        <p>Clean, swap-friendly screenshot slots for your counter tablet.</p>
       </div>
       <div class="shots">
         <figure class="shot">
-          <img src="assets/home.jpg" alt="SKLauncher home screen with photo, clock, and weather" loading="lazy" width="1280" height="800">
-          <figcaption><strong>Home screen</strong> The photo frame and clock that give the tablet a clean counter look.</figcaption>
+          <img src="assets/home.jpg" alt="SKLauncher counter home screen: a clean clock on your café photo" loading="lazy" width="1280" height="800">
+          <figcaption><strong>The Counter Home Screen</strong> A clean clock, your café's background photo, and direct one-tap access to your POS, delivery apps, and music.</figcaption>
         </figure>
         <figure class="shot">
-          <img src="assets/sheet.jpg" alt="SKLauncher app grid with app grid" loading="lazy" width="1280" height="800">
-          <figcaption><strong>App launcher</strong> A simple app grid designed for quick taps.</figcaption>
+          <div class="shot-placeholder">PIN lock screenshot (coming soon)</div>
+          <figcaption><strong>Hidden 5-Tap Owner PIN</strong> Tap the clock five times to unlock your admin menu without cluttering the screen for staff.</figcaption>
         </figure>
         <figure class="shot">
-          <img src="assets/digest.jpg" alt="SKLauncher screen with calendar, weather, music, photos and theme" loading="lazy" width="1280" height="800">
-          <figcaption><strong>Simple kiosk screen</strong> A clean layout you can leave on the counter.</figcaption>
+          <div class="shot-placeholder">POS grid screenshot (coming soon)</div>
+          <figcaption><strong>Choose Only Approved Apps</strong> Check the 3 to 5 apps your counter needs and hide everything else on the tablet.</figcaption>
         </figure>
       </div>
     </div>
   </section>
 
-  <section>
+  <section id="setup">
     <div class="wrap">
       <div class="section-head">
-        <h2>Works for different café setups.</h2>
-        <p>Use it as a counter screen, a simple menu tablet, a kitchen display companion, or a calm music and ambient display. Start with the setup that fits your café.</p>
-      </div>
-      <div class="split">
-        <div class="panel">
-          <div class="tag tag-primary">Café owners</div>
-          <h3>A simple screen for everyday use.</h3>
-          <ul>
-            <li>Keep POS, menu, music, or loyalty apps easy to reach.</li>
-            <li>Give an old Android tablet a clear, useful home screen.</li>
-            <li>Use it on a counter, wall, kitchen shelf, or customer-facing stand.</li>
-          </ul>
-          <a class="btn btn-primary" href="https://github.com/SimpleAppLauncher/SN-Launcher/releases/download/v0.4.4/SN-Launcher-ef-0.4.4-arm64-v8a.apk">Download for Android tablet</a>
-        </div>
-        <div class="panel">
-          <div class="tag tag-accent">Setup help</div>
-          <h3>Need help getting started?</h3>
-          <ul>
-            <li>Pick a tablet, install SKLauncher, and choose the apps you want on screen.</li>
-            <li>SKLauncher installs on Android tablets.</li>
-            <li>For setup questions or business inquiries, reach out by email.</li>
-          </ul>
-          <a class="btn btn-secondary" href="mailto:hello@example.com?subject=SKLauncher%20setup%20help">Email for setup help</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="get-it" class="section-soft">
-    <div class="wrap">
-      <div class="section-head">
-        <h2>Get SKLauncher</h2>
-        <p>Download SKLauncher, install it on your Android tablet, and set it as your home screen.</p>
+        <h2>Set Up Your Counter in 2 Minutes</h2>
+        <p>You don't need an IT person or a factory reset to get started.</p>
       </div>
       <div class="steps">
         <div class="step">
-          <h3>Download</h3>
-          <p>Use the download button for most Android tablets. If your tablet needs a different version, use <a href="https://github.com/SimpleAppLauncher/SN-Launcher/releases/latest">all downloads</a>.</p>
+          <h3>Download &amp; Install</h3>
+          <p>Tap <strong>Download for Android Tablet</strong> on your counter device and open the installer file.</p>
         </div>
         <div class="step">
-          <h3>Install</h3>
-          <p>Open the downloaded file on your tablet and follow Android’s install steps. You can test it on a spare tablet first.</p>
+          <h3>Pick Your Café Apps &amp; PIN</h3>
+          <p>Open SKLauncher, tap the clock 5 times to set your 4-digit Owner PIN, and check the POS, delivery, or music apps you want on screen.</p>
         </div>
         <div class="step">
-          <h3>Set up your counter</h3>
-          <p>Pick the apps you want on screen, like POS, menu, music, or loyalty, and place the tablet where your team needs it.</p>
+          <h3>Set as Default Home Screen</h3>
+          <p>Tap <strong>Set as Default Launcher</strong> in the admin menu so your tablet always opens straight to your café counter—even after a reboot.</p>
         </div>
       </div>
       <div class="callout">
-        <strong>Free and open source:</strong> SKLauncher is free to download and use, licensed under Apache 2.0. Technical install details are in the footnote below.
-      </div>
-      <div style="margin-top:1.5rem; display:flex; gap:0.75rem; flex-wrap:wrap;">
-        <a class="btn btn-primary" href="https://github.com/SimpleAppLauncher/SN-Launcher/releases/download/v0.4.4/SN-Launcher-ef-0.4.4-arm64-v8a.apk">Download for Android tablet</a>
-        <a class="btn btn-secondary" href="https://github.com/SimpleAppLauncher/SN-Launcher/releases/latest">All downloads</a>
+        Have an old Android tablet? <a href="mailto:hello@example.com?subject=SKLauncher%20cafe%20setup">Email us</a> your tablet model and the POS apps you use, and we'll help you get set up.
       </div>
     </div>
   </section>
@@ -257,32 +232,28 @@
   <section id="faq">
     <div class="wrap">
       <div class="section-head">
-        <h2>Common questions</h2>
+        <h2>Common Questions</h2>
         <p>Straight answers about what SKLauncher is and how to use it.</p>
       </div>
       <details>
-        <summary>What is SKLauncher?</summary>
-        <p>SKLauncher is a simple home screen for Android tablets. It shows a photo background, a large clock, and a grid of your installed apps.</p>
+        <summary>Do I need to switch my POS software?</summary>
+        <p>No. SKLauncher is a home screen launcher, not a payment processor. You keep using Square, Loyverse, KiotViet, Sapo, Toast, or whatever POS and delivery apps you already run.</p>
       </details>
       <details>
-        <summary>Is it free?</summary>
-        <p>Yes. SKLauncher is free, open-source software licensed under Apache 2.0.</p>
+        <summary>Is SKLauncher really free for commercial cafés?</summary>
+        <p>Yes. SKLauncher is 100% free and open-source under the Apache 2.0 license, which allows full commercial use in your shop with no subscriptions or hidden fees.</p>
       </details>
       <details>
-        <summary>Can I use it in my café?</summary>
-        <p>Yes. SKLauncher is free, open-source software under Apache 2.0, which allows commercial use.</p>
+        <summary>Can staff exit SKLauncher and open other apps?</summary>
+        <p>Only the apps you approve appear on the counter grid, and system navigation bars are hidden. Changing settings or adding apps requires tapping the clock 5 times and entering your 4-digit Owner PIN.</p>
       </details>
       <details>
         <summary>What tablets does it work on?</summary>
-        <p>SKLauncher targets Android tablets, including older low-RAM devices. For the best result, test on your tablet before putting it on the counter.</p>
+        <p>Any Android tablet (including older 1–4 GB RAM models from Samsung, Lenovo, Xiaomi, or Fire tablets with APK support). Test it on a spare tablet at your counter first.</p>
       </details>
       <details>
-        <summary>Does it replace my POS or menu app?</summary>
-        <p>No. SKLauncher is the home screen that makes your tablet simple to use. You still run your own POS, menu, music, or loyalty apps on the tablet.</p>
-      </details>
-      <details>
-        <summary>How do I get help with setup?</summary>
-        <p>Use the contact button on this page to email us about setup or business questions.</p>
+        <summary>Can you help me set up my shop's tablets?</summary>
+        <p>Yes. If you have an old Android tablet and want help getting it ready for your counter, email us your tablet model and the POS apps you use.</p>
       </details>
     </div>
   </section>
@@ -296,22 +267,19 @@
       <div>
         <h4>Product</h4>
         <ul>
-          <li><a href="https://github.com/SimpleAppLauncher/SN-Launcher/releases">Download releases</a></li>
-          <li><a href="https://github.com/SimpleAppLauncher/SN-Launcher">Project on GitHub</a></li>
-          <li><a href="https://github.com/SimpleAppLauncher/SN-Launcher/releases/latest">All downloads</a></li>
+          <li><a href="https://github.com/SimpleAppLauncher">All projects on GitHub</a></li>
         </ul>
       </div>
       <div>
         <h4>Contact and legal</h4>
         <ul>
           <li><a href="mailto:hello@example.com?subject=SKLauncher%20inquiry">Email</a></li>
-          <li><a href="https://github.com/Giathinh1234/SimpleAppLauncher">This site repo</a></li>
           <li><a href="../LICENSE">Apache 2.0</a></li>
         </ul>
       </div>
     </div>
     <div class="wrap fine">
-      <p>SKLauncher is free, open-source software (Apache 2.0). Screenshots are real project captures. <span id="technical-details">Technical details: the Android download above is the current arm64 ef build; other device builds and source are on <a href="https://github.com/SimpleAppLauncher/SN-Launcher/releases/latest">GitHub releases</a>.</span></p>
+      <p>SKLauncher is free, open-source software (Apache 2.0). Designed for independent cafés. Screenshot slots above are clean placeholders where your counter captures can be added.</p>
     </div>
   </footer>
 </body>
