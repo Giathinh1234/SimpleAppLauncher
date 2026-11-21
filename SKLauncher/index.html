@@ -3,110 +3,111 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SKLauncher — A simple counter kiosk for your café</title>
-  <meta name="description" content="SKLauncher turns an Android tablet into a clean, simple screen for your café counter — clock, apps, and a calm photo background.">
+  <title>SKLauncher, a simple counter kiosk for your café</title>
+  <meta name="description" content="SKLauncher turns an Android tablet into a clean, simple screen for your café counter, with clock, apps, and a calm photo background.">
   <style>
     :root {
-      --bg: #ffffff;
-      --bg-soft: #f7fffe;
-      --text: #111827;
-      --muted: #5f6b7a;
-      --teal: #0dd5c9;
-      --teal-deep: #0ab3a9;
-      --coral: #f46b2a;
-      --coral-soft: #fff4ef;
-      --border: #e7ecef;
-      --shadow: 0 10px 30px rgba(17, 24, 39, 0.06);
-      --radius: 20px;
+      --bg: #F5F1EB;
+      --surface: #FFFDFC;
+      --surface-alt: #EFEBE2;
+      --text: #1E2328;
+      --muted: #5E6B75;
+      --primary: #1F4D3A;
+      --primary-soft: #E7EFEA;
+      --accent: #C75B39;
+      --accent-soft: #F7E8E2;
+      --border: #D9D2C7;
+      --shadow: 0 4px 18px rgba(30, 35, 40, 0.06);
+      --radius: 6px;
+      --radius-sm: 4px;
       --max: 1120px;
     }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
     body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--text); background: var(--bg); line-height: 1.6; }
     img { max-width: 100%; height: auto; display: block; }
-    a { color: var(--teal-deep); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    a { color: var(--primary); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+    a:hover { color: var(--accent); }
     .wrap { width: min(calc(100% - 2rem), var(--max)); margin-inline: auto; }
-    .nav { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(12px); background: rgba(255,255,255,0.9); border-bottom: 1px solid rgba(231,236,239,0.7); }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.9rem 0; }
-    .brand { font-weight: 800; font-size: 1.2rem; color: var(--text); letter-spacing: -0.02em; }
-    .brand span { color: var(--teal-deep); }
+    .nav { position: sticky; top: 0; z-index: 20; background: rgba(245, 241, 235, 0.96); border-bottom: 1px solid var(--border); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.85rem 0; flex-wrap: wrap; }
+    .brand { font-weight: 800; font-size: 1.15rem; color: var(--text); letter-spacing: -0.01em; text-decoration: none; }
+    .brand span { color: var(--primary); }
     .nav-links { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.95rem; font-weight: 600; }
-    .nav-links a { color: var(--muted); }
-    .nav-links a:hover { color: var(--coral); text-decoration: none; }
-    .btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.8rem 1.2rem; border-radius: 999px; font-weight: 700; text-decoration: none !important; transition: transform .15s ease, box-shadow .15s ease; border: 2px solid transparent; }
-    .btn:hover { transform: translateY(-1px); }
-    .btn-primary { background: var(--coral); color: #fff; box-shadow: 0 8px 24px rgba(244,107,42,0.28); }
-    .btn-primary:hover { box-shadow: 0 12px 28px rgba(244,107,42,0.34); }
-    .btn-secondary { background: #fff; color: var(--text); border-color: var(--border); }
-    .btn-secondary:hover { border-color: #cfd8df; }
-    .hero { padding: 4.5rem 0 3rem; background: radial-gradient(ellipse 80% 60% at 70% 20%, rgba(13,213,201,0.16), transparent 60%), radial-gradient(ellipse 60% 50% at 20% 80%, rgba(244,107,42,0.10), transparent 55%), linear-gradient(180deg, #ffffff 0%, var(--bg-soft) 100%); }
-    .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 2.5rem; align-items: center; }
-    .eyebrow { display: inline-block; font-size: 0.8rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--teal-deep); background: rgba(13,213,201,0.12); padding: 0.4rem 0.75rem; border-radius: 999px; }
-    h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); line-height: 1.05; margin: 1rem 0; letter-spacing: -0.035em; }
-    h1 .accent { color: var(--coral); }
-    .lead { font-size: 1.15rem; color: #374151; max-width: 38rem; margin: 0 0 1.5rem; }
-    .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+    .nav-links a { color: var(--muted); text-decoration: none; padding: 0.2rem 0; }
+    .nav-links a:hover { color: var(--accent); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.8rem 1.2rem; border-radius: var(--radius-sm); font-weight: 700; text-decoration: none; transition: background-color .15s ease, color .15s ease, border-color .15s ease; border: 2px solid transparent; cursor: pointer; font-size: 1rem; line-height: 1.2; }
+    .btn:hover { text-decoration: none; }
+    .btn-primary { background: var(--primary); color: #F5F1EB; border-color: var(--primary); }
+    .btn-primary:hover { background: #183D2E; color: #F5F1EB; }
+    .btn-secondary { background: transparent; color: var(--text); border-color: var(--border); }
+    .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+    .hero { padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(2rem, 4vw, 3rem); background: linear-gradient(180deg, #F5F1EB 0%, #EFEBE2 100%); border-bottom: 1px solid var(--border); }
+    .hero-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: center; }
+    .eyebrow { display: inline-block; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary); background: var(--primary-soft); padding: 0.4rem 0.7rem; border-radius: var(--radius-sm); }
+    h1 { font-size: clamp(2rem, 5vw, 3.6rem); line-height: 1.1; margin: 1rem 0; letter-spacing: -0.02em; }
+    h1 .accent { color: var(--accent); }
+    .lead { font-size: clamp(1rem, 2.2vw, 1.15rem); color: #374151; max-width: 38rem; margin: 0 0 1.25rem; }
+    .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; }
     .hero-note { font-size: 0.92rem; color: var(--muted); margin: 0; max-width: 38rem; }
-    .hero-shot { background: #111827; padding: 0.75rem; border-radius: 28px; box-shadow: 0 25px 60px rgba(17,24,39,0.18); }
-    .hero-shot img { border-radius: 20px; width: 100%; }
-    .hero-shot figcaption { color: #9ca3af; font-size: 0.78rem; text-align: center; padding: 0.6rem 0 0; }
-    section { padding: 4rem 0; }
-    .section-soft { background: var(--bg-soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .free-badge { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.88rem; font-weight: 700; color: var(--primary); background: var(--surface); border: 1px solid var(--border); padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); margin-bottom: 1rem; }
+    .free-badge::before { content: ""; width: 10px; height: 10px; background: var(--accent); flex: 0 0 10px; }
+    .hero-shot { background: #232A2F; padding: 0.6rem; border-radius: var(--radius); border: 1px solid #3A434A; }
+    .hero-shot img { border-radius: 2px; width: 100%; height: auto; }
+    .hero-shot figcaption { color: #C7CED4; font-size: 0.78rem; text-align: center; padding: 0.6rem 0 0.1rem; }
+    section { padding: clamp(2.5rem, 5vw, 4rem) 0; }
+    .section-soft { background: var(--surface-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
     .section-head { max-width: 42rem; margin-bottom: 2rem; }
-    .section-head h2 { font-size: clamp(1.8rem, 4vw, 2.7rem); line-height: 1.15; margin: 0 0 0.75rem; letter-spacing: -0.02em; }
-    .section-head p { margin: 0; color: var(--muted); font-size: 1.05rem; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
-    .card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); }
-    .icon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 1.3rem; margin-bottom: 1rem; font-weight: 700; }
-    .icon-teal { background: rgba(13,213,201,0.14); color: var(--teal-deep); }
-    .icon-coral { background: rgba(244,107,42,0.12); color: var(--coral); }
-    .card h3 { margin: 0 0 0.5rem; font-size: 1.15rem; }
+    .section-head h2 { font-size: clamp(1.6rem, 4vw, 2.5rem); line-height: 1.15; margin: 0 0 0.75rem; letter-spacing: -0.02em; }
+    .section-head p { margin: 0; color: var(--muted); font-size: 1.02rem; }
+    .grid-3, .shots, .split, .steps, .footer-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.4rem; }
+    .icon { width: 42px; height: 42px; border-radius: var(--radius-sm); display: grid; place-items: center; font-size: 1.2rem; margin-bottom: 1rem; font-weight: 700; }
+    .icon-primary { background: var(--primary-soft); color: var(--primary); }
+    .icon-accent { background: var(--accent-soft); color: var(--accent); }
+    .card h3 { margin: 0 0 0.5rem; font-size: 1.12rem; }
     .card p { margin: 0; color: #4b5563; }
-    .shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
-    figure.shot { margin: 0; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
-    figure.shot img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; background: #f3f4f6; }
+    figure.shot { margin: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    figure.shot img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; background: #e5e7eb; }
     figure.shot figcaption { padding: 1rem 1.1rem; font-size: 0.92rem; color: var(--muted); }
     figure.shot strong { display: block; color: var(--text); margin-bottom: 0.2rem; font-size: 0.98rem; }
-    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-    .panel { padding: 2rem; border-radius: var(--radius); border: 1px solid var(--border); background: #fff; }
-    .panel h3 { margin-top: 0; font-size: 1.4rem; letter-spacing: -0.01em; }
+    .panel { padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); }
+    .panel h3 { margin-top: 0; font-size: 1.35rem; letter-spacing: -0.01em; }
     .panel ul { padding-left: 1.2rem; margin: 1rem 0 1.5rem; color: #4b5563; }
     .panel li + li { margin-top: 0.45rem; }
-    .panel-home { background: linear-gradient(180deg, #fff 0%, #f7fffe 100%); }
-    .panel-biz { background: linear-gradient(180deg, #fff 0%, var(--coral-soft) 100%); }
-    .tag { display: inline-block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; padding: 0.35rem 0.6rem; border-radius: 999px; margin-bottom: 0.75rem; }
-    .tag-teal { background: rgba(13,213,201,0.14); color: var(--teal-deep); }
-    .tag-coral { background: rgba(244,107,42,0.12); color: var(--coral); }
-    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; counter-reset: step; }
-    .step { padding: 1.5rem; border-radius: var(--radius); background: #fff; border: 1px solid var(--border); }
-    .step::before { counter-increment: step; content: counter(step); width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--teal); color: #062b29; font-weight: 800; margin-bottom: 0.9rem; }
-    .step h3 { margin: 0 0 0.4rem; font-size: 1.1rem; }
+    .tag { display: inline-block; font-size: 0.74rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; padding: 0.35rem 0.6rem; border-radius: var(--radius-sm); margin-bottom: 0.75rem; }
+    .tag-primary { background: var(--primary-soft); color: var(--primary); }
+    .tag-accent { background: var(--accent-soft); color: var(--accent); }
+    .steps { counter-reset: step; }
+    .step { padding: 1.4rem; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--border); }
+    .step::before { counter-increment: step; content: counter(step); width: 32px; height: 32px; border-radius: var(--radius-sm); display: grid; place-items: center; background: var(--primary); color: #F5F1EB; font-weight: 800; margin-bottom: 0.9rem; }
+    .step h3 { margin: 0 0 0.4rem; font-size: 1.08rem; }
     .step p { margin: 0; color: var(--muted); font-size: 0.95rem; }
-    .callout { margin-top: 1.5rem; padding: 1rem 1.25rem; border-radius: 14px; background: #fff; border: 1px solid #dbe7ee; color: #374151; font-size: 0.95rem; }
-    details { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 0.2rem 1.1rem; }
+    .callout { margin-top: 1.5rem; padding: 1rem 1.1rem; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--border); color: #374151; font-size: 0.95rem; }
+    details { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.2rem 1rem; }
     details + details { margin-top: 0.75rem; }
     summary { cursor: pointer; padding: 0.95rem 0; font-weight: 700; list-style: none; }
     summary::-webkit-details-marker { display: none; }
-    summary::after { content: "+"; float: right; color: var(--coral); font-weight: 800; }
+    summary::after { content: "+"; float: right; color: var(--accent); font-weight: 800; margin-left: 1rem; }
     details[open] summary::after { content: "−"; }
     details p { margin: 0 0 1rem; color: var(--muted); }
     .footer { padding: 2.5rem 0 3rem; color: var(--muted); font-size: 0.92rem; border-top: 1px solid var(--border); }
-    .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 1.5rem; }
     .footer h4 { margin: 0 0 0.6rem; color: var(--text); font-size: 0.95rem; }
     .footer ul { list-style: none; padding: 0; margin: 0; }
     .footer li + li { margin-top: 0.35rem; }
     .fine { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: 0.85rem; }
-    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88em; background: #f3f4f6; padding: 0.12em 0.35em; border-radius: 5px; }
-    @media (max-width: 900px) {
-      .hero-grid, .grid-3, .shots, .split, .steps, .footer-grid { grid-template-columns: 1fr; }
-      .hero { padding-top: 3.5rem; }
-      .hero-shot { max-width: 680px; margin-inline: auto; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88em; background: #EAE5DB; padding: 0.12em 0.35em; border-radius: 2px; }
+    @media (min-width: 700px) {
+      .grid-3, .shots, .steps { grid-template-columns: repeat(3, 1fr); }
+      .split, .footer-grid { grid-template-columns: repeat(2, 1fr); }
     }
-    @media (max-width: 640px) {
-      .nav-links { display: none; }
-      section { padding: 3rem 0; }
-      .card, .panel, .step { padding: 1.25rem; }
+    @media (min-width: 960px) {
+      .hero-grid { grid-template-columns: 1.05fr .95fr; gap: 2.5rem; }
+      .footer-grid { grid-template-columns: 1.4fr 1fr 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .btn { transition: none; }
     }
   </style>
 </head>
@@ -120,21 +121,21 @@
         <a href="#get-it">Get it</a>
         <a href="#faq">FAQ</a>
       </div>
-      <a class="btn btn-primary" href="https://github.com/SimpleAppLauncher/SN-Launcher/releases">Download</a>
     </div>
   </nav>
 
   <header class="hero">
     <div class="wrap hero-grid">
       <div>
-        <div class="eyebrow">SKLauncher · by SimpleAppLauncher</div>
+        <div class="eyebrow">SKLauncher by SimpleAppLauncher</div>
         <h1>Turn any Android tablet into a clean <span class="accent">counter kiosk</span> for your café.</h1>
-        <p class="lead">Put the apps your team uses — POS, menu, music, or loyalty — on one simple screen. SKLauncher gives you a clear clock, a calm photo background, and an easy app grid, so the tablet feels ready for the counter.</p>
+        <p class="lead">Put the apps your team uses, like POS, menu, music, or loyalty, on one simple screen. SKLauncher gives you a clear clock, a calm photo background, and an easy app grid so the tablet feels ready for the counter.</p>
+        <div class="free-badge">Free for now. Download and use it at no cost.</div>
         <div class="hero-actions">
           <a class="btn btn-primary" href="https://github.com/SimpleAppLauncher/SN-Launcher/releases">Download for Android</a>
           <a class="btn btn-secondary" href="mailto:hello@example.com?subject=SKLauncher%20cafe%20setup">Contact for setup</a>
         </div>
-        <p class="hero-note">Runs on Android tablets, including older low-RAM devices (1–4 GB target). The contact button is a placeholder — replace <code>hello@example.com</code> with your real address.</p>
+        <p class="hero-note">Runs on Android tablets, including older low-RAM devices (1 to 4 GB target).</p>
       </div>
       <figure class="hero-shot">
         <img src="assets/home.jpg" alt="SN-Launcher home screen showing a photo background, large clock, and weather" width="1280" height="800">
@@ -151,17 +152,17 @@
       </div>
       <div class="grid-3">
         <article class="card">
-          <div class="icon icon-teal">◷</div>
+          <div class="icon icon-primary">◷</div>
           <h3>Easy to read at a glance</h3>
           <p>A large clock over a photo background gives the tablet a clear, calm look that works well on a counter or wall.</p>
         </article>
         <article class="card">
-          <div class="icon icon-coral">▦</div>
+          <div class="icon icon-accent">▦</div>
           <h3>Your apps, front and center</h3>
           <p>Put your POS, menu, music, or loyalty apps in a simple grid so staff can get to them quickly.</p>
         </article>
         <article class="card">
-          <div class="icon icon-teal">▣</div>
+          <div class="icon icon-primary">▣</div>
           <h3>Good fit for older tablets</h3>
           <p>SN-Launcher is built with low-RAM Android tablets in mind, so you can make better use of hardware you already have.</p>
         </article>
@@ -186,7 +187,7 @@
         </figure>
         <figure class="shot">
           <img src="assets/digest.jpg" alt="SN-Launcher page with calendar, weather, music, photos and theme" loading="lazy" width="1280" height="800">
-          <figcaption><strong>More pages</strong> SN-Launcher includes other pages; SKLauncher is the simple kiosk page.</figcaption>
+          <figcaption><strong>More pages</strong> SN-Launcher includes other pages. SKLauncher is the simple kiosk page.</figcaption>
         </figure>
       </div>
     </div>
@@ -196,11 +197,11 @@
     <div class="wrap">
       <div class="section-head">
         <h2>Works for different café setups.</h2>
-        <p>Use it as a counter screen, a simple menu tablet, a kitchen display companion, or a calm music/ambient display. Start with the setup that fits your café.</p>
+        <p>Use it as a counter screen, a simple menu tablet, a kitchen display companion, or a calm music and ambient display. Start with the setup that fits your café.</p>
       </div>
       <div class="split">
-        <div class="panel panel-home">
-          <div class="tag tag-teal">Café owners</div>
+        <div class="panel">
+          <div class="tag tag-primary">Café owners</div>
           <h3>A simple screen for everyday use.</h3>
           <ul>
             <li>Keep POS, menu, music, or loyalty apps easy to reach.</li>
@@ -209,8 +210,8 @@
           </ul>
           <a class="btn btn-primary" href="https://github.com/SimpleAppLauncher/SN-Launcher/releases">Download SN-Launcher</a>
         </div>
-        <div class="panel panel-biz">
-          <div class="tag tag-coral">Setup help</div>
+        <div class="panel">
+          <div class="tag tag-accent">Setup help</div>
           <h3>Need help getting started?</h3>
           <ul>
             <li>Pick a tablet, install SN-Launcher, and choose the apps you want on screen.</li>
@@ -244,7 +245,7 @@
         </div>
       </div>
       <div class="callout">
-        <strong>Good to know:</strong> SN-Launcher currently has two builds — <strong>reduced</strong> and <strong>ef</strong>. SKLauncher is available in the ef build. If you need help picking the right download, use the contact button above.
+        <strong>Free for now:</strong> SKLauncher is free to download and use right now. SN-Launcher currently has two builds, reduced and ef. SKLauncher is available in the ef build.
       </div>
       <div style="margin-top:1.5rem; display:flex; gap:0.75rem; flex-wrap:wrap;">
         <a class="btn btn-primary" href="https://github.com/SimpleAppLauncher/SN-Launcher/releases">Open releases</a>
@@ -264,8 +265,12 @@
         <p>SKLauncher (SimpleKioskLauncher) is a simple launcher page in SN-Launcher. It shows a photo background, a large clock, and a grid of your installed apps.</p>
       </details>
       <details>
+        <summary>Is it free?</summary>
+        <p>Yes, it is free for now. You can download and use it at no cost. The SKLauncher site/repo is licensed under Apache 2.0.</p>
+      </details>
+      <details>
         <summary>Can I use it in my café?</summary>
-        <p>Yes. This site/repo is licensed under Apache 2.0, which allows commercial use. Check the main SN-Launcher project for its specific license and asset attributions.</p>
+        <p>Yes. Apache 2.0 allows commercial use. Check the main SN-Launcher project for its own license and asset attributions.</p>
       </details>
       <details>
         <summary>What tablets does it work on?</summary>
@@ -277,11 +282,7 @@
       </details>
       <details>
         <summary>How do I get help with setup?</summary>
-        <p>Use the contact button on this page. Right now it points to <code>hello@example.com</code> as a placeholder — replace it with your real contact address before sharing the site widely.</p>
-      </details>
-      <details>
-        <summary>Where is the source code?</summary>
-        <p>The site repo is <a href="https://github.com/Giathinh1234/SimpleAppLauncher">Giathinh1234/SimpleAppLauncher</a>. The SN-Launcher app source is at <a href="https://github.com/SimpleAppLauncher/SN-Launcher">SimpleAppLauncher/SN-Launcher</a>.</p>
+        <p>Use the contact button on this page to email us about setup or business questions.</p>
       </details>
     </div>
   </section>
@@ -290,7 +291,7 @@
     <div class="wrap footer-grid">
       <div>
         <h4>SKLauncher</h4>
-        <p>A simple counter-kiosk screen for Android tablets, made by SimpleAppLauncher.</p>
+        <p>A simple counter kiosk screen for Android tablets, made by SimpleAppLauncher.</p>
       </div>
       <div>
         <h4>Product</h4>
@@ -301,9 +302,9 @@
         </ul>
       </div>
       <div>
-        <h4>Contact &amp; legal</h4>
+        <h4>Contact and legal</h4>
         <ul>
-          <li><a href="mailto:hello@example.com?subject=SKLauncher%20inquiry">Email (placeholder)</a></li>
+          <li><a href="mailto:hello@example.com?subject=SKLauncher%20inquiry">Email</a></li>
           <li><a href="https://github.com/Giathinh1234/SimpleAppLauncher">This site repo</a></li>
           <li><a href="../LICENSE">Apache 2.0</a></li>
         </ul>
