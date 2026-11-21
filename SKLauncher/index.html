@@ -1,116 +1,374 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SKLauncher — fresh startup vibe</title>
-<style>
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background: #FFFFFF;
-  color: #111827;
-  line-height: 1.6;
-}
-.hero {
-  background: linear-gradient(135deg, #0DD5C9 0%, #F46B2A 100%);
-  color: #111827;
-  padding: 2.75rem 2.5rem;
-  border-radius: 20px;
-  margin: 0 0 2rem;
-}
-.hero h1 {
-  font-family: 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
-  font-size: 3.25rem;
-  font-weight: 900;
-  line-height: 0.95;
-  margin: 0 0 0.4rem;
-  letter-spacing: -0.02em;
-  text-shadow: 0 2px 10px rgba(15, 23, 35, 0.12);
-}
-.hero p.sub { font-size: 1.15rem; margin: 0.5rem 0 0; }
-.card {
-  background: #FFFFFF;
-  border: 1px solid #E6E6E6;
-  border-radius: 16px;
-  padding: 2rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 2px 8px rgba(17, 24, 39, 0.05);
-}
-.card h2 { margin: 0 0 0.75rem; font-size: 1.35rem; color: #0DD5C9; font-weight: 800; }
-.btn {
-  display: inline-block;
-  background: #F46B2A;
-  color: #111827;
-  font-weight: 700;
-  padding: 0.6em 1.3em;
-  border-radius: 999px;
-  text-decoration: none;
-  box-shadow: 0 4px 12px rgba(244, 107, 42, 0.3);
-  transition: box-shadow 0.12s ease, transform 0.12s ease;
-}
-.btn:hover { box-shadow: 0 6px 16px rgba(244, 107, 42, 0.42); transform: translateY(-1px); }
-.muted { color: #6B7280; }
-a { color: #0DD5C9; text-decoration: none; }
-a:hover { text-decoration: underline; }
-footer { color: #6B7280; font-size: 0.85rem; }
-.footer-row a { display: inline-block; margin-right: 1.25rem; color: #F46B2A; font-weight: 700; }
-.footer-row a:hover { text-decoration: none; opacity: 0.8; }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SKLauncher — Simple Kiosk Launcher</title>
+  <meta name="description" content="SKLauncher is a barebone kiosk launcher page for wall-mounted tablets — photo frame, clock, and your apps. Part of SN-Launcher.">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f7fffe;
+      --text: #111827;
+      --muted: #5f6b7a;
+      --teal: #0dd5c9;
+      --teal-deep: #0ab3a9;
+      --coral: #f46b2a;
+      --coral-soft: #fff1eb;
+      --border: #e7ecef;
+      --card: #ffffff;
+      --shadow: 0 10px 30px rgba(17, 24, 39, 0.06);
+      --radius: 20px;
+      --max: 1120px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: var(--teal-deep); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { width: min(calc(100% - 2rem), var(--max)); margin-inline: auto; }
+    .nav {
+      position: sticky; top: 0; z-index: 20;
+      backdrop-filter: blur(12px); background: rgba(255,255,255,0.88);
+      border-bottom: 1px solid rgba(231,236,239,0.7);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; padding: 0.9rem 0;
+    }
+    .brand { font-weight: 800; font-size: 1.2rem; color: var(--text); letter-spacing: -0.02em; }
+    .brand span { color: var(--teal-deep); }
+    .nav-links { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.95rem; font-weight: 600; }
+    .nav-links a { color: var(--muted); }
+    .nav-links a:hover { color: var(--coral); text-decoration: none; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 0.8rem 1.2rem; border-radius: 999px; font-weight: 700;
+      text-decoration: none !important; transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+      border: 2px solid transparent;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--coral); color: #fff; box-shadow: 0 8px 24px rgba(244,107,42,0.28); }
+    .btn-primary:hover { box-shadow: 0 12px 28px rgba(244,107,42,0.34); }
+    .btn-secondary { background: #fff; color: var(--text); border-color: var(--border); }
+    .btn-secondary:hover { border-color: #cfd8df; }
+    .hero {
+      padding: 4.5rem 0 3rem;
+      background: radial-gradient(ellipse 80% 60% at 70% 20%, rgba(13,213,201,0.16), transparent 60%),
+                  radial-gradient(ellipse 60% 50% at 20% 80%, rgba(244,107,42,0.10), transparent 55%),
+                  linear-gradient(180deg, #ffffff 0%, var(--bg-soft) 100%);
+    }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 2.5rem; align-items: center; }
+    .eyebrow {
+      display: inline-block; font-size: 0.8rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--teal-deep); background: rgba(13,213,201,0.12); padding: 0.4rem 0.75rem; border-radius: 999px;
+    }
+    h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); line-height: 1.05; margin: 1rem 0; letter-spacing: -0.035em; }
+    h1 .accent { color: var(--coral); }
+    .lead { font-size: 1.15rem; color: #374151; max-width: 38rem; margin: 0 0 1.5rem; }
+    .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+    .hero-note { font-size: 0.92rem; color: var(--muted); margin: 0; }
+    .hero-shot {
+      background: #111827; padding: 0.75rem; border-radius: 28px; box-shadow: 0 25px 60px rgba(17,24,39,0.18);
+      transform: rotate(1deg);
+    }
+    .hero-shot img { border-radius: 20px; width: 100%; }
+    .hero-shot figcaption { color: #9ca3af; font-size: 0.78rem; text-align: center; padding: 0.6rem 0 0; }
+    section { padding: 4rem 0; }
+    .section-soft { background: var(--bg-soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .section-head { max-width: 42rem; margin-bottom: 2rem; }
+    .section-head h2 { font-size: clamp(1.8rem, 4vw, 2.7rem); line-height: 1.15; margin: 0 0 0.75rem; letter-spacing: -0.02em; }
+    .section-head p { margin: 0; color: var(--muted); font-size: 1.05rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.5rem; box-shadow: var(--shadow);
+    }
+    .icon {
+      width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+      font-size: 1.3rem; margin-bottom: 1rem; font-weight: 700;
+    }
+    .icon-teal { background: rgba(13,213,201,0.14); color: var(--teal-deep); }
+    .icon-coral { background: rgba(244,107,42,0.12); color: var(--coral); }
+    .card h3 { margin: 0 0 0.5rem; font-size: 1.15rem; }
+    .card p { margin: 0; color: #4b5563; }
+    .shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+    figure.shot { margin: 0; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    figure.shot img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; background: #f3f4f6; }
+    figure.shot figcaption { padding: 1rem 1.1rem; font-size: 0.92rem; color: var(--muted); }
+    figure.shot strong { display: block; color: var(--text); margin-bottom: 0.2rem; font-size: 0.98rem; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .panel {
+      padding: 2rem; border-radius: var(--radius); border: 1px solid var(--border); background: #fff;
+    }
+    .panel h3 { margin-top: 0; font-size: 1.4rem; letter-spacing: -0.01em; }
+    .panel ul { padding-left: 1.2rem; margin: 1rem 0 1.5rem; color: #4b5563; }
+    .panel li + li { margin-top: 0.45rem; }
+    .panel-home { background: linear-gradient(180deg, #fff 0%, #f7fffe 100%); }
+    .panel-biz { background: linear-gradient(180deg, #fff 0%, var(--coral-soft) 100%); }
+    .tag {
+      display: inline-block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em;
+      padding: 0.35rem 0.6rem; border-radius: 999px; margin-bottom: 0.75rem;
+    }
+    .tag-teal { background: rgba(13,213,201,0.14); color: var(--teal-deep); }
+    .tag-coral { background: rgba(244,107,42,0.12); color: var(--coral); }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; counter-reset: step; }
+    .step { padding: 1.5rem; border-radius: var(--radius); background: #fff; border: 1px solid var(--border); }
+    .step::before {
+      counter-increment: step; content: counter(step);
+      width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
+      background: var(--teal); color: #062b29; font-weight: 800; margin-bottom: 0.9rem;
+    }
+    .step h3 { margin: 0 0 0.4rem; font-size: 1.1rem; }
+    .step p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+    .callout {
+      margin-top: 1.5rem; padding: 1rem 1.25rem; border-radius: 14px;
+      background: #fff; border: 1px solid #fbd3c2; color: #7c2d12; font-size: 0.95rem;
+    }
+    .callout strong { color: #9a3412; }
+    details {
+      background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 0.2rem 1.1rem;
+    }
+    details + details { margin-top: 0.75rem; }
+    summary { cursor: pointer; padding: 0.95rem 0; font-weight: 700; list-style: none; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; float: right; color: var(--coral); font-weight: 800; }
+    details[open] summary::after { content: "−"; }
+    details p { margin: 0 0 1rem; color: var(--muted); }
+    .footer {
+      padding: 2.5rem 0 3rem; color: var(--muted); font-size: 0.92rem;
+      border-top: 1px solid var(--border);
+    }
+    .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 1.5rem; }
+    .footer h4 { margin: 0 0 0.6rem; color: var(--text); font-size: 0.95rem; }
+    .footer ul { list-style: none; padding: 0; margin: 0; }
+    .footer li + li { margin-top: 0.35rem; }
+    .fine { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: 0.85rem; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88em; background: #f3f4f6; padding: 0.12em 0.35em; border-radius: 5px; }
+    @media (max-width: 900px) {
+      .hero-grid, .grid-3, .shots, .split, .steps, .footer-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 3.5rem; }
+      .hero-shot { transform: none; max-width: 680px; margin-inline: auto; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      section { padding: 3rem 0; }
+      .card, .panel, .step { padding: 1.25rem; }
+    }
+  </style>
 </head>
 <body>
-<main style="max-width: 42rem; margin: 0 auto; padding: 2.5rem 1.25rem;">
-  <div class="hero">
-    <h1>SKLauncher</h1>
-    <p class="sub">SimpleKioskLauncher — the barebone launcher page.</p>
-  </div>
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="../">Simple<span>App</span>Launcher</a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#screenshots">Screenshots</a>
+        <a href="#get-it">Get it</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <a class="btn btn-primary" href="https://github.com/SimpleAppLauncher/SN-Launcher/releases">Download</a>
+    </div>
+  </nav>
 
-  <div class="card">
-    <h2>What it is</h2>
-    <p>A barebone launcher page for wall displays: it reads as the app the user
-       sees — the photograph frame, the big clock, the date line — and below it
-       a grid of the installed apps in the same look as the launcher sheet.
-       Barebone on purpose: no quick settings, no suggestions, no search, no
-       voice, no weather graphics. It is the page you set a tablet down on and
-       just use.</p>
-    <p class="muted">This page is served as the GitHub page of the repo
-       <a href="https://github.com/Giathinh1234/SimpleAppLauncher">Giathinh1234/SimpleAppLauncher</a>
-       at /SimpleAppLauncher/SKLauncher/.</p>
-    <p><a class="btn" href="https://github.com/SimpleAppLauncher/SN-Launcher">Back to the product: SN-Launcher &rarr;</a></p>
-  </div>
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">SKLauncher · SimpleKioskLauncher</div>
+        <h1>Turn an old tablet into a <span class="accent">simple kiosk</span>.</h1>
+        <p class="lead">SKLauncher is a barebone launcher page from SN-Launcher: a photo frame, a big clock, and a clean app grid. No clutter, no extra noise — just the screen you leave on the wall.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://github.com/SimpleAppLauncher/SN-Launcher/releases">Get SN-Launcher</a>
+          <a class="btn btn-secondary" href="#screenshots">See the screen</a>
+        </div>
+        <p class="hero-note">Built for Android wall tablets. SKLauncher is available in the <strong>ef (ExtraFeature)</strong> build — see details below.</p>
+      </div>
+      <figure class="hero-shot">
+        <img src="assets/home.jpg" alt="SN-Launcher home screen showing a photo background, large clock, weather, and app dock" width="1280" height="800">
+        <figcaption>Real SN-Launcher screen capture from the project docs.</figcaption>
+      </figure>
+    </div>
+  </header>
 
-  <div class="card">
-    <h2>Where the code is</h2>
-    <ul>
-      <li><strong>The page widget</strong>: <code>lib/src/widgets/simple_kiosk_launcher.dart</code> in the app repo.</li>
-      <li><strong>The shell case</strong>: the <code>ShellPage.skLauncher</code> case in <code>lib/src/screens/nest_shell.dart</code>.</li>
-      <li><strong>Flags</strong>: <code>"skLauncher": true</code> in <code>assets/features.ef.json</code> (ef build only; the reduced build's page list deliberately stays home + digest).</li>
-      <li><strong>Tests</strong>: the ef-build behaviour in <code>test/feature_gate_widget_test.dart</code> (the carousel stacks every page, so on ef there are two clock texts and the kiosk app tiles).</li>
-    </ul>
-    <p><a class="btn" href="https://github.com/Giathinh1234/SimpleAppLauncher/tree/master/SKLauncher">Repo &rarr;</a></p>
-  </div>
+  <section id="features">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Simple by design. Useful on purpose.</h2>
+        <p>SKLauncher keeps the familiar SN-Launcher look — photo background, readable clock, app grid — and strips away everything a kiosk doesn't need.</p>
+      </div>
+      <div class="grid-3">
+        <article class="card">
+          <div class="icon icon-teal">◷</div>
+          <h3>Always-readable clock</h3>
+          <p>A large clock over a photo frame, the same visual language as the SN-Launcher home screen. Made to be glanced at from across the room.</p>
+        </article>
+        <article class="card">
+          <div class="icon icon-coral">▦</div>
+          <h3>App grid, no fluff</h3>
+          <p>Your installed apps in a clean grid. No quick settings, no suggestions, no search chrome — just tap and launch.</p>
+        </article>
+        <article class="card">
+          <div class="icon icon-teal">▣</div>
+          <h3>Built for old tablets</h3>
+          <p>SN-Launcher is designed for low-RAM Android tablets (1–4 GB target). The goal is to give e-waste hardware a useful second life.</p>
+        </article>
+      </div>
+    </div>
+  </section>
 
-  <div class="card">
-    <h2>Licence</h2>
-    <p>Licensed under the <a href="LICENSE">PolyForm Noncommercial License 1.0.0</a> —
-       Copyright SN-Launcher contributors. Use is limited to noncommercial purposes.</p>
-    <p>The screens, the bundled photographs, the Google Sans type face and the Google
-       Material Symbols carry their own licences and credits
-       (<a href="https://github.com/SimpleAppLauncher/SN-Launcher/blob/master/assets/photo/ATTRIBUTION.md">attribution file</a>).</p>
-  </div>
+  <section id="screenshots" class="section-soft">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Real screens, real project.</h2>
+        <p>These screenshots come from the SN-Launcher project docs — not mockups. SKLauncher uses the same home-screen visual language in a barebone page.</p>
+      </div>
+      <div class="shots">
+        <figure class="shot">
+          <img src="assets/home.jpg" alt="SN-Launcher home screen with photo, clock, and weather" loading="lazy" width="1280" height="800">
+          <figcaption><strong>Home screen</strong>The photo frame, clock, and ambient look that SKLauncher builds on.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="assets/sheet.jpg" alt="SN-Launcher app sheet with app grid and quick settings" loading="lazy" width="1280" height="800">
+          <figcaption><strong>App launcher</strong>The app grid style SKLauncher keeps — simple, large, touch-friendly.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="assets/digest.jpg" alt="SN-Launcher digest page with calendar, weather, music, photos and theme" loading="lazy" width="1280" height="800">
+          <figcaption><strong>SN-Launcher pages</strong>SN-Launcher has multiple pages; SKLauncher is the barebone kiosk page in the ef build.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
 
-  <div class="card">
-    <h2>Honest status</h2>
-    <p class="muted">This page describes the page, the repo and the licence. It has not been verified on hardware —
-       the page itself lives in the app repo, <code>nestlaunch</code>, on the ef build.</p>
-  </div>
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Made for homes. Ready for honest conversations.</h2>
+        <p>Whether you're mounting a tablet in the kitchen or exploring a simple kiosk setup, SKLauncher keeps the promise small and clear.</p>
+      </div>
+      <div class="split">
+        <div class="panel panel-home">
+          <div class="tag tag-teal">For home</div>
+          <h3>Repurpose the tablet in your drawer.</h3>
+          <ul>
+            <li>Use an old Android tablet as a wall display.</li>
+            <li>Keep a clock and your key apps one tap away.</li>
+            <li>Avoid the clutter of a full phone-style launcher.</li>
+            <li>Part of SN-Launcher, a Nest Hub–style launcher project.</li>
+          </ul>
+          <a class="btn btn-primary" href="https://github.com/SimpleAppLauncher/SN-Launcher/releases">Download SN-Launcher</a>
+        </div>
+        <div class="panel panel-biz">
+          <div class="tag tag-coral">For business / fleet</div>
+          <h3>Exploring kiosks or wall displays?</h3>
+          <ul>
+            <li>SKLauncher is a barebone kiosk page — simple by intent.</li>
+            <li>SN-Launcher targets low-cost Android hardware.</li>
+            <li>Early project: no fake fleet claims, no invented case studies.</li>
+            <li>Want to discuss a use case? Open a GitHub issue.</li>
+          </ul>
+          <a class="btn btn-secondary" href="https://github.com/SimpleAppLauncher/SN-Launcher/issues">Talk on GitHub Issues</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <footer class="footer-row">
-    <a href="../">SimpleAppLauncher home</a>
-    <a href="https://github.com/Giathinh1234/SimpleAppLauncher">GitHub: Giathinh1234/SimpleAppLauncher</a>
-    <a href="https://giathinh1234.github.io/SimpleAppLauncher/">Pages: giathinh1234.github.io/SimpleAppLauncher</a>
+  <section id="get-it" class="section-soft">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Get SKLauncher</h2>
+        <p>SKLauncher lives inside SN-Launcher. Install the ef build, open the launcher, and swipe to the SimpleKioskLauncher page.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <h3>Download the ef build</h3>
+          <p>Grab an <strong>ef</strong> APK from SN-Launcher releases. Pick the ABI that matches your device (most modern tablets: <code>arm64-v8a</code>).</p>
+        </div>
+        <div class="step">
+          <h3>Install on Android</h3>
+          <p>Install the APK on your tablet and set SN-Launcher as your home screen. The ef build includes SKLauncher.</p>
+        </div>
+        <div class="step">
+          <h3>Use the kiosk page</h3>
+          <p>SKLauncher is the SimpleKioskLauncher page — photo frame, clock, and app grid. Barebone, as intended.</p>
+        </div>
+      </div>
+      <div class="callout">
+        <strong>Honest note:</strong> SKLauncher is in the <strong>ef (ExtraFeature)</strong> build and is marked as experimental in that line. The <strong>reduced</strong> build is the stable/ship candidate and does not include SKLauncher. SN-Launcher has two builds. I have not claimed hardware verification for this page beyond what the project has actually tested — check the main SN-Launcher repo for current status.
+      </div>
+      <div style="margin-top:1.5rem; display:flex; gap:0.75rem; flex-wrap:wrap;">
+        <a class="btn btn-primary" href="https://github.com/SimpleAppLauncher/SN-Launcher/releases">Open releases</a>
+        <a class="btn btn-secondary" href="https://github.com/SimpleAppLauncher/SN-Launcher">SN-Launcher repo</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Questions, answered plainly.</h2>
+        <p>No marketing fog. If something is experimental or unverified, it says so.</p>
+      </div>
+      <details>
+        <summary>What is SKLauncher?</summary>
+        <p>SKLauncher (SimpleKioskLauncher) is a barebone launcher page in SN-Launcher. It keeps the same visual language as the home screen — photo frame, clock, app grid — and removes extras like quick settings, suggestions, and search.</p>
+      </details>
+      <details>
+        <summary>Is it in the stable build?</summary>
+        <p>No. SKLauncher is currently in the <strong>ef (ExtraFeature)</strong> build only. The reduced build deliberately keeps its page set to home + digest. SN-Launcher has two builds.</p>
+      </details>
+      <details>
+        <summary>What devices does it target?</summary>
+        <p>SN-Launcher targets Android tablets, especially low-RAM / repurposed hardware (1–4 GB class). Real hardware testing is an ongoing project process — check the SN-Launcher repo for the latest verified device notes.</p>
+      </details>
+      <details>
+        <summary>Is this a finished commercial kiosk product?</summary>
+        <p>No. It's an early, honest project. The page is designed to be useful and clear, but I'm not claiming fleet certification, enterprise support, or customer deployments that don't exist.</p>
+      </details>
+      <details>
+        <summary>How do I ask about business/fleet use?</summary>
+        <p>Open a GitHub issue at <a href="https://github.com/SimpleAppLauncher/SN-Launcher/issues">SimpleAppLauncher/SN-Launcher issues</a>. Describe your device, use case, and constraints. That's the right place for an honest conversation.</p>
+      </details>
+      <details>
+        <summary>What's the license?</summary>
+        <p>This repo/page is under the <a href="../LICENSE">PolyForm Noncommercial License 1.0.0</a> — Copyright SN-Launcher contributors. The SN-Launcher app repo has its own license and attribution files; bundled photos/fonts/icons keep their own licenses.</p>
+      </details>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <div>
+        <h4>SKLauncher</h4>
+        <p>A barebone kiosk launcher page from SN-Launcher. Simple, bright, and honest about what it is.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <ul>
+          <li><a href="https://github.com/SimpleAppLauncher/SN-Launcher/releases">Download releases</a></li>
+          <li><a href="https://github.com/SimpleAppLauncher/SN-Launcher">SN-Launcher repo</a></li>
+          <li><a href="../">SimpleAppLauncher home</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Talk / legal</h4>
+        <ul>
+          <li><a href="https://github.com/SimpleAppLauncher/SN-Launcher/issues">GitHub Issues</a></li>
+          <li><a href="https://github.com/Giathinh1234/SimpleAppLauncher">This site repo</a></li>
+          <li><a href="../LICENSE">PolyForm NC 1.0.0</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="wrap fine">
+      <p>SKLauncher is part of SN-Launcher. Screenshots are real project captures from <code>nestlaunch/docs/shots</code>. No fake testimonials, no invented metrics, no fabricated customer logos. <strong>There are 2 versions</strong> of SN-Launcher (reduced and ef); SKLauncher is currently ef-only.</p>
+    </div>
   </footer>
-</main>
 </body>
 </html>
