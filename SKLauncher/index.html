@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SKLauncher — fresh startup vibe</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: #FFFFFF;
+  color: #111827;
+  line-height: 1.6;
+}
+.hero {
+  background: linear-gradient(135deg, #0DD5C9 0%, #F46B2A 100%);
+  color: #111827;
+  padding: 2.75rem 2.5rem;
+  border-radius: 20px;
+  margin: 0 0 2rem;
+}
+.hero h1 {
+  font-family: 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
+  font-size: 3.25rem;
+  font-weight: 900;
+  line-height: 0.95;
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 10px rgba(15, 23, 35, 0.12);
+}
+.hero p.sub { font-size: 1.15rem; margin: 0.5rem 0 0; }
+.card {
+  background: #FFFFFF;
+  border: 1px solid #E6E6E6;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(17, 24, 39, 0.05);
+}
+.card h2 { margin: 0 0 0.75rem; font-size: 1.35rem; color: #0DD5C9; font-weight: 800; }
+.btn {
+  display: inline-block;
+  background: #F46B2A;
+  color: #111827;
+  font-weight: 700;
+  padding: 0.6em 1.3em;
+  border-radius: 999px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(244, 107, 42, 0.3);
+  transition: box-shadow 0.12s ease, transform 0.12s ease;
+}
+.btn:hover { box-shadow: 0 6px 16px rgba(244, 107, 42, 0.42); transform: translateY(-1px); }
+.muted { color: #6B7280; }
+a { color: #0DD5C9; text-decoration: none; }
+a:hover { text-decoration: underline; }
+footer { color: #6B7280; font-size: 0.85rem; }
+.footer-row a { display: inline-block; margin-right: 1.25rem; color: #F46B2A; font-weight: 700; }
+.footer-row a:hover { text-decoration: none; opacity: 0.8; }
+</style>
+</head>
+<body>
+<main style="max-width: 42rem; margin: 0 auto; padding: 2.5rem 1.25rem;">
+  <div class="hero">
+    <h1>SKLauncher</h1>
+    <p class="sub">SimpleKioskLauncher — the barebone launcher page.</p>
+  </div>
+
+  <div class="card">
+    <h2>What it is</h2>
+    <p>A barebone launcher page for wall displays: it reads as the app the user
+       sees — the photograph frame, the big clock, the date line — and below it
+       a grid of the installed apps in the same look as the launcher sheet.
+       Barebone on purpose: no quick settings, no suggestions, no search, no
+       voice, no weather graphics. It is the page you set a tablet down on and
+       just use.</p>
+    <p class="muted">This page is served as the GitHub page of the repo
+       <a href="https://github.com/Giathinh1234/SimpleAppLauncher">Giathinh1234/SimpleAppLauncher</a>
+       at /SimpleAppLauncher/SKLauncher/.</p>
+    <p><a class="btn" href="https://github.com/SimpleAppLauncher/SN-Launcher">Back to the product: SN-Launcher &rarr;</a></p>
+  </div>
+
+  <div class="card">
+    <h2>Where the code is</h2>
+    <ul>
+      <li><strong>The page widget</strong>: <code>lib/src/widgets/simple_kiosk_launcher.dart</code> in the app repo.</li>
+      <li><strong>The shell case</strong>: the <code>ShellPage.skLauncher</code> case in <code>lib/src/screens/nest_shell.dart</code>.</li>
+      <li><strong>Flags</strong>: <code>"skLauncher": true</code> in <code>assets/features.ef.json</code> (ef build only; the reduced build's page list deliberately stays home + digest).</li>
+      <li><strong>Tests</strong>: the ef-build behaviour in <code>test/feature_gate_widget_test.dart</code> (the carousel stacks every page, so on ef there are two clock texts and the kiosk app tiles).</li>
+    </ul>
+    <p><a class="btn" href="https://github.com/Giathinh1234/SimpleAppLauncher/tree/master/SKLauncher">Repo &rarr;</a></p>
+  </div>
+
+  <div class="card">
+    <h2>Licence</h2>
+    <p>Licensed under the <a href="LICENSE">PolyForm Noncommercial License 1.0.0</a> —
+       Copyright SN-Launcher contributors. Use is limited to noncommercial purposes.</p>
+    <p>The screens, the bundled photographs, the Google Sans type face and the Google
+       Material Symbols carry their own licences and credits
+       (<a href="https://github.com/SimpleAppLauncher/SN-Launcher/blob/master/assets/photo/ATTRIBUTION.md">attribution file</a>).</p>
+  </div>
+
+  <div class="card">
+    <h2>Honest status</h2>
+    <p class="muted">This page describes the page, the repo and the licence. It has not been verified on hardware —
+       the page itself lives in the app repo, <code>nestlaunch</code>, on the ef build.</p>
+  </div>
+
+  <footer class="footer-row">
+    <a href="../">SimpleAppLauncher home</a>
+    <a href="https://github.com/Giathinh1234/SimpleAppLauncher">GitHub: Giathinh1234/SimpleAppLauncher</a>
+    <a href="https://giathinh1234.github.io/SimpleAppLauncher/">Pages: giathinh1234.github.io/SimpleAppLauncher</a>
+  </footer>
+</main>
+</body>
+</html>

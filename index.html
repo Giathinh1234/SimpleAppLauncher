@@ -2,40 +2,52 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>SKLauncher</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SimpleAppLauncher</title>
 <style>
-body { font-family: -apple-system, sans-serif; margin: 2.5rem auto; max-width: 38rem; line-height: 1.55; color: #222; }
-code { font-family: ui-monospace, monospace; }
-a { color: #145cdb; }
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: #FFFFFF;
+  color: #111827;
+  line-height: 1.6;
+}
+main { max-width: 42rem; margin: 0 auto; padding: 3rem 1.25rem 2.5rem; }
+header.site {
+  background: linear-gradient(120deg, #0DD5C9 0%, #F46B2A 70%, #F5B041 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+h1 { font-size: 2.4rem; font-weight: 800; line-height: 1.1; margin: 0 0 1rem; }
+h2 { font-size: 1.25rem; font-weight: 700; margin: 2.25rem 0 0.75rem; }
+.tagline { font-size: 1.2rem; font-weight: 600; color: #0DD5C9; margin-top: 0; }
+.link-line { margin: 1.25rem 0; }
+.link-line a { color: #F46B2A; text-decoration: none; font-weight: 600; }
+.link-line a:hover { text-decoration: underline; }
+footer { margin-top: 2.5rem; font-size: 0.85rem; color: #6B7280; }
+footer a { color: #0DD5C9; }
 </style>
 </head>
 <body>
-<h1>SKLauncher (SimpleKioskLauncher)</h1>
-
-<p>A barebone launcher page for wall displays — it reads as the app the user
-sees: the photograph frame, the big clock, the date line — and below it a
-grid of the installed apps in the same look as the launcher sheet. Barebone
-on purpose: no quick settings, no suggestions, no search, no voice, no
-weather graphics. It is the page you set a tablet down on and just use.</p>
-
-<h2>Licence</h2>
-
-<p>Licensed under the <a href="LICENSE">PolyForm Noncommercial License
-1.0.0</a> — Copyright SN-Launcher contributors. Use is limited to
-noncommercial purposes. The Screens, the photos and the Google Sans type
-face carry their own licences and their own credits (see
-<a href="../nestlaunch/assets/photo/ATTRIBUTION.md">the attribution
-file</a>).</p>
-
-<h2>Layout of this repo</h2>
-
-<ul>
-<li><code>index.html</code> — this page (the GitHub page of SKLauncher)</li>
-<li><code>LICENSE</code> — PolyForm Noncommercial 1.0.0</li>
-<li>Source lives in the app repo, <code>nestlaunch</code>:
-  <code>lib/src/widgets/simple_kiosk_launcher.dart</code> (the page
-  widget) and the <code>ShellPage.skLauncher</code> case in
-  <code>lib/src/screens/nest_shell.dart</code>.</li>
-</ul>
+<main>
+  <p class="tagline">SimpleAppLauncher</p>
+  <h1>SN-Launcher</h1>
+  <p>A Google Nest Hub style launcher: it puts an old tablet on a wall and
+     has it look like a smart display — the photograph frame, the big
+     clock, the weather, the app drawer. Built for low-end wall-mounted
+     hardware (1–4 GB RAM, so nothing you'd want to run on your phone has
+     to do anything here).</p>
+  <h2>Products</h2>
+  <p><strong>SN-Launcher</strong> — the main product, also known as this
+     repo's app (org: <a href="https://github.com/SimpleAppLauncher/SN-Launcher">SimpleAppLauncher/SN-Launcher</a>).</p>
+  <p><strong><a href="SKLauncher/">SKLauncher (SimpleKioskLauncher)</a></strong> — the barebone kiosk launcher page, its own repo
+     (<a href="https://github.com/Giathinh1234/SimpleAppLauncher">Giathinh1234/SimpleAppLauncher</a>).</p>
+  <div class="link-line">
+    <p><a href="SKLauncher/">→ The SKLauncher page</a></p>
+    <p><a href="https://github.com/Giathinh1234/SimpleAppLauncher">GitHub: Giathinh1234/SimpleAppLauncher</a></p>
+    <p><a href="https://giathinh1234.github.io/SN-Launcher/">SN-Launcher Pages site</a> ·
+       <a href="https://github.com/SimpleAppLauncher/SN-Launcher/releases">SN-Launcher releases</a></p>
+  </div>
+</main>
 </body>
 </html>
